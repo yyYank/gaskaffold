@@ -1,6 +1,6 @@
-export const STEPS: Step[] = [
+export const STEPS: InfraRunbookInput[] = [
   {
-    id: "01-001" as StepId,
+    id: "01-001",
     phase: "事前確認",
     title: "ディスク空き容量確認",
     description: "デプロイに必要な最低 2GB 以上の空きがあること",
@@ -12,7 +12,7 @@ export const STEPS: Step[] = [
     ],
   },
   {
-    id: "01-002" as StepId,
+    id: "01-002",
     phase: "デプロイ",
     title: "Nginx 停止",
     command: "systemctl stop nginx",

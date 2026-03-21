@@ -3,14 +3,15 @@
  * GAS グローバルスコープで利用するためexportしない
  */
 
-// ノミナルタイピング: ブランド型で誤用を防ぐ
-type ScreenId = string & { readonly _brand: "ScreenId" };
-
-interface Screen {
-  id: ScreenId;
+// Input: asキャスト不要なプレーンな型
+type ScreenInput = {
+  id: string;
   name: string;
   path: string;
   owner: string;
   description?: string;
   status?: "未着手" | "開発中" | "完了";
-}
+};
+
+// Output: Brand型で他のSheet型と区別する
+type ScreenListSheet = Brand<{ sheets: SheetData[] }, "ScreenListSheet">;

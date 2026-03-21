@@ -5,10 +5,14 @@
 
 type SwotCategory = "Strength" | "Weakness" | "Opportunity" | "Threat";
 
-interface SwotItem {
+// Input: asキャスト不要なプレーンな型
+type SwotInput = {
   id: string;
   category: SwotCategory;
   item: string;
   description?: string;
   priority?: "高" | "中" | "低";
-}
+};
+
+// Output: Brand型で他のSheet型と区別する
+type SwotSheet = Brand<{ sheets: SheetData[] }, "SwotSheet">;

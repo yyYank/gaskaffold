@@ -3,11 +3,9 @@
  * GAS グローバルスコープで利用するためexportしない
  */
 
-// ノミナルタイピング: ブランド型で誤用を防ぐ
-type TestCaseId = string & { readonly _brand: "TestCaseId" };
-
-interface TestCase {
-  id: TestCaseId;
+// Input: asキャスト不要なプレーンな型
+type TestCaseInput = {
+  id: string;
   category: string;
   title: string;
   precondition?: string;
@@ -17,4 +15,7 @@ interface TestCase {
   status?: "未実施" | "OK" | "NG" | "保留";
   tester?: string;
   memo?: string;
-}
+};
+
+// Output: Brand型で他のSheet型と区別する
+type TestRunbookSheet = Brand<{ sheets: SheetData[] }, "TestRunbookSheet">;

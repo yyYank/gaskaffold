@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "export-tsv": "ts-node scripts/export-tsv.ts"
+    "export-tsv": "ts-node --files scripts/export-tsv.ts"
   },
   "devDependencies": {
     "@google/clasp": "^2.4.2",

@@ -3,17 +3,15 @@
  * GAS グローバルスコープで利用するためexportしない
  */
 
-// ノミナルタイピング: ブランド型で誤用を防ぐ
-type StepId = string & { readonly _brand: "StepId" };
-
-interface FileRef {
+// Input: asキャスト不要なプレーンな型
+type InfraRunbookFileRef = {
   file: string;
   direction: "input" | "output";
   description?: string;
-}
+};
 
-interface Step {
-  id: StepId;
+type InfraRunbookInput = {
+  id: string;
   phase: string;
   title: string;
   description?: string;
@@ -21,5 +19,8 @@ interface Step {
   expected?: string;
   rollback?: string;
   owner: string;
-  files?: FileRef[];
-}
+  files?: InfraRunbookFileRef[];
+};
+
+// Output: Brand型で他のSheet型と区別する
+type InfraRunbookSheet = Brand<{ sheets: SheetData[] }, "InfraRunbookSheet">;

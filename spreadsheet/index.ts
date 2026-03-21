@@ -3,17 +3,21 @@
  * GAS エディタ、またはスプレッドシートのメニューから build() を実行する
  */
 
-// GAS 環境ではすべてのファイルがグローバルスコープを共有するため、
-// 他ファイルの変数を declare で参照する
-declare const STEPS: { id: string; phase: string; title: string; description?: string; command?: string; expected?: string; rollback?: string; owner: string; files?: { file: string; direction: string; description?: string }[] }[];
-declare const SCREENS: { id: string; name: string; path: string; owner: string; description?: string; status?: string }[];
+declare const STEPS: InfraRunbookInput[];
+declare const SCREENS: ScreenInput[];
+
+function writeSheets(
+  spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
+  data: { sheets: SheetData[] }
+): void {
+  for (const sheet of data.sheets) {
+    buildSheet(spreadsheet, sheet.name, sheet.headers, sheet.rows);
+  }
+}
 
 function build(): void {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
-  // インフラ手順書
-  buildInfraRunbook(spreadsheet, STEPS);
-
-  // 画面一覧
-  buildScreenList(spreadsheet, SCREENS);
+  writeSheets(spreadsheet, infraRunbookBuilder.build(STEPS));
+  writeSheets(spreadsheet, screenListBuilder.build(SCREENS));
 }

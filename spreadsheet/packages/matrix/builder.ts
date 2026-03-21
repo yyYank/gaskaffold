@@ -1,16 +1,20 @@
 /**
- * マトリクス表シートのビルド（GAS 上で実行）
+ * マトリクス表シートのビルダー（GAS 上で実行）
+ * Builder<MatrixInput, MatrixSheet> を実装するconstオブジェクト
  */
 
-function buildMatrix(
-  spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
-  matrix: { columns: string[]; rows: { id: string; label: string; [key: string]: string }[] }
-): void {
-  const headers = ["id", "label", ...matrix.columns];
-  const rows = matrix.rows.map((r) => [
-    r.id,
-    r.label,
-    ...matrix.columns.map((col) => r[col] ?? ""),
-  ]);
-  buildSheet(spreadsheet, "マトリクス", headers, rows);
-}
+const matrixBuilder: Builder<MatrixInput, MatrixSheet> = {
+  build(input) {
+    const headers = ["id", "label", ...input.columns];
+    const rows = input.rows.map((r) => [
+      r.id,
+      r.label,
+      ...input.columns.map((col) => r[col] ?? ""),
+    ]);
+
+    return {
+      sheets: [{ name: "マトリクス", headers, rows }],
+      __brand: "MatrixSheet",
+    } as MatrixSheet;
+  },
+};

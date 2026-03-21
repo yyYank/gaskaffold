@@ -1,18 +1,22 @@
 /**
- * SWOT シートのビルド（GAS 上で実行）
+ * SWOT シートのビルダー（GAS 上で実行）
+ * Builder<SwotInput[], SwotSheet> を実装するconstオブジェクト
  */
 
-function buildSwot(
-  spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
-  items: { id: string; category: string; item: string; description?: string; priority?: string }[]
-): void {
-  const headers = ["id", "category", "item", "description", "priority"];
-  const rows = items.map((s) => [
-    s.id,
-    s.category,
-    s.item,
-    s.description ?? "",
-    s.priority ?? "中",
-  ]);
-  buildSheet(spreadsheet, "SWOT", headers, rows);
-}
+const swotBuilder: Builder<SwotInput[], SwotSheet> = {
+  build(input) {
+    const headers = ["id", "category", "item", "description", "priority"];
+    const rows = input.map((s) => [
+      s.id,
+      s.category,
+      s.item,
+      s.description ?? "",
+      s.priority ?? "中",
+    ]);
+
+    return {
+      sheets: [{ name: "SWOT", headers, rows }],
+      __brand: "SwotSheet",
+    } as SwotSheet;
+  },
+};

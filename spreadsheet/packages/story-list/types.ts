@@ -3,11 +3,9 @@
  * GAS グローバルスコープで利用するためexportしない
  */
 
-// ノミナルタイピング: ブランド型で誤用を防ぐ
-type StoryId = string & { readonly _brand: "StoryId" };
-
-interface Story {
-  id: StoryId;
+// Input: asキャスト不要なプレーンな型
+type StoryInput = {
+  id: string;
   title: string;
   asA: string;
   iWant: string;
@@ -16,4 +14,7 @@ interface Story {
   status?: "未着手" | "開発中" | "完了";
   owner?: string;
   storyPoints?: number;
-}
+};
+
+// Output: Brand型で他のSheet型と区別する
+type StoryListSheet = Brand<{ sheets: SheetData[] }, "StoryListSheet">;

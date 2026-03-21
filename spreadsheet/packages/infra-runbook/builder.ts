@@ -1,31 +1,36 @@
 /**
- * インフラ手順書シートのビルド（GAS 上で実行）
- * Step 型は packages/infra-runbook/types.ts でグローバル定義
+ * インフラ手順書シートのビルダー（GAS 上で実行）
+ * Builder<InfraRunbookInput[], InfraRunbookSheet> を実装するconstオブジェクト
  */
 
-function buildInfraRunbook(
-  spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
-  steps: Step[]
-): void {
-  const stepHeaders = ["step_id", "phase", "title", "description", "command", "expected", "rollback", "owner"];
-  const stepRows = steps.map((s) => [
-    s.id,
-    s.phase,
-    s.title,
-    s.description ?? "",
-    s.command ?? "",
-    s.expected ?? "",
-    s.rollback ?? "",
-    s.owner,
-  ]);
-  buildSheet(spreadsheet, "手順書", stepHeaders, stepRows);
+const infraRunbookBuilder: Builder<InfraRunbookInput[], InfraRunbookSheet> = {
+  build(input) {
+    const stepHeaders = ["step_id", "phase", "title", "description", "command", "expected", "rollback", "owner"];
+    const stepRows = input.map((s) => [
+      s.id,
+      s.phase,
+      s.title,
+      s.description ?? "",
+      s.command ?? "",
+      s.expected ?? "",
+      s.rollback ?? "",
+      s.owner,
+    ]);
 
-  const fileHeaders = ["step_id", "file", "direction", "description"];
-  const fileRows: (string | number | boolean)[][] = [];
-  for (const step of steps) {
-    for (const f of step.files ?? []) {
-      fileRows.push([step.id, f.file, f.direction, f.description ?? ""]);
+    const fileHeaders = ["step_id", "file", "direction", "description"];
+    const fileRows: (string | number | boolean)[][] = [];
+    for (const step of input) {
+      for (const f of step.files ?? []) {
+        fileRows.push([step.id, f.file, f.direction, f.description ?? ""]);
+      }
     }
-  }
-  buildSheet(spreadsheet, "ファイル一覧", fileHeaders, fileRows);
-}
+
+    return {
+      sheets: [
+        { name: "手順書", headers: stepHeaders, rows: stepRows },
+        { name: "ファイル一覧", headers: fileHeaders, rows: fileRows },
+      ],
+      __brand: "InfraRunbookSheet",
+    } as InfraRunbookSheet;
+  },
+};

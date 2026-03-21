@@ -3,13 +3,17 @@
  * GAS グローバルスコープで利用するためexportしない
  */
 
-interface MatrixRow {
+// Input: asキャスト不要なプレーンな型
+type MatrixRowInput = {
   id: string;
   label: string;
   [key: string]: string;
-}
+};
 
-interface Matrix {
+type MatrixInput = {
   columns: string[];
-  rows: MatrixRow[];
-}
+  rows: MatrixRowInput[];
+};
+
+// Output: Brand型で他のSheet型と区別する
+type MatrixSheet = Brand<{ sheets: SheetData[] }, "MatrixSheet">;
