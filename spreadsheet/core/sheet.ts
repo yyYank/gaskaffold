@@ -1,5 +1,5 @@
 /**
- * シート構築の共通ロジック（GAS 上で実行）
+ * シート操作の共通ロジック（GAS 上で実行）
  */
 
 function getOrCreateSheet(spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet, name: string): GoogleAppsScript.Spreadsheet.Sheet {
@@ -10,6 +10,22 @@ function getOrCreateSheet(spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
   return sheet;
 }
 
+/**
+ * 既存シートの内容をバックアップシートにコピーする
+ * バックアップシート名: _backup_{元シート名}_{タイムスタンプ}
+ */
+function backupSheet(spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet, sheet: GoogleAppsScript.Spreadsheet.Sheet): void {
+  const lastRow = sheet.getLastRow();
+  const lastCol = sheet.getLastColumn();
+  if (lastRow === 0 || lastCol === 0) return;
+
+  const timestamp = Utilities.formatDate(new Date(), "Asia/Tokyo", "yyyyMMdd_HHmmss");
+  const backupName = `_backup_${sheet.getName()}_${timestamp}`;
+  const backupSheet = spreadsheet.insertSheet(backupName);
+  const data = sheet.getRange(1, 1, lastRow, lastCol).getValues();
+  backupSheet.getRange(1, 1, lastRow, lastCol).setValues(data);
+}
+
 function buildSheet(
   spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
   sheetName: string,
@@ -17,6 +33,9 @@ function buildSheet(
   rows: (string | number | boolean)[][]
 ): void {
   const sheet = getOrCreateSheet(spreadsheet, sheetName);
+
+  // 既存データをバックアップしてからクリア
+  backupSheet(spreadsheet, sheet);
   sheet.clearContents();
 
   if (headers.length > 0) {
