@@ -1,29 +1,33 @@
 /**
  * インフラ手順書シートのビルダー（GAS 上で実行）
- * Builder<InfraRunbookInput[], InfraRunbookSheet> を実装するconstオブジェクト
+ * Builder<RunbookPhase[], InfraRunbookSheet> を実装するconstオブジェクト
+ *
+ * 設計方針: ADR-002 に従い意味構造 → row への変換はここだけに閉じ込める
  */
 
-const infraRunbookBuilder: Builder<InfraRunbookInput[], InfraRunbookSheet> = {
+const infraRunbookBuilder: Builder<RunbookPhase[], InfraRunbookSheet> = {
   build(input) {
-    const stepHeaders = ["step_id", "phase", "title", "description", "command", "expected", "rollback", "owner"];
-    const stepRows = input.map((s) => [
-      s.id,
-      s.phase,
-      s.title,
-      s.description ?? "",
-      s.command ?? "",
-      s.expected ?? "",
-      s.rollback ?? "",
-      s.owner,
-    ]);
+    // 意味構造 (Phase > Step) を row に展開する
+    const stepHeaders = ["phase", "step_id", "title", "description", "command", "expected", "rollback", "owner"];
+    const stepRows = input.flatMap(({ phase, steps }) =>
+      steps.map((s) => [
+        phase,
+        s.id,
+        s.title,
+        s.description ?? "",
+        s.verification.command,
+        s.verification.expected,
+        s.rollback?.command ?? "",
+        s.owner,
+      ])
+    );
 
     const fileHeaders = ["step_id", "file", "direction", "description"];
-    const fileRows: (string | number | boolean)[][] = [];
-    for (const step of input) {
-      for (const f of step.files ?? []) {
-        fileRows.push([step.id, f.file, f.direction, f.description ?? ""]);
-      }
-    }
+    const fileRows = input.flatMap(({ steps }) =>
+      steps.flatMap((s) =>
+        (s.files ?? []).map((f) => [s.id, f.file, f.direction, f.description ?? ""])
+      )
+    );
 
     return {
       sheets: [

@@ -3,7 +3,7 @@
  * GAS エディタ、またはスプレッドシートのメニューから build() を実行する
  */
 
-declare const STEPS: InfraRunbookInput[];
+declare const RUNBOOK: RunbookPhase[];
 declare const SCREENS: ScreenInput[];
 
 function writeSheets(
@@ -18,6 +18,6 @@ function writeSheets(
 function build(): void {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
-  writeSheets(spreadsheet, infraRunbookBuilder.build(STEPS));
+  writeSheets(spreadsheet, infraRunbookBuilder.build(RUNBOOK));
   writeSheets(spreadsheet, screenListBuilder.build(SCREENS));
 }
