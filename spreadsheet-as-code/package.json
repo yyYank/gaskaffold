@@ -1,0 +1,19 @@
+{
+  "name": "gaskaffold",
+  "version": "0.1.0",
+  "description": "Google スプレッドシートなど、GASで扱えるドキュメント群をコードで管理するボイラープレート生成キットツール",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc",
+    "export-tsv": "ts-node scripts/export-tsv.ts"
+  },
+  "devDependencies": {
+    "@google/clasp": "^2.4.2",
+    "@types/google-apps-script": "^1.0.83",
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.0"
+  }
+}
