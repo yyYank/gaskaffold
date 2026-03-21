@@ -1,10 +1,11 @@
 /**
  * インフラ手順書シートのビルド（GAS 上で実行）
+ * Step 型は packages/infra-runbook/types.ts でグローバル定義
  */
 
 function buildInfraRunbook(
   spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
-  steps: { id: string; phase: string; title: string; description?: string; command?: string; expected?: string; rollback?: string; owner: string; files?: { file: string; direction: string; description?: string }[] }[]
+  steps: Step[]
 ): void {
   const stepHeaders = ["step_id", "phase", "title", "description", "command", "expected", "rollback", "owner"];
   const stepRows = steps.map((s) => [

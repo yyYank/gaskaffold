@@ -1,14 +1,15 @@
 /**
  * マトリクス表の型定義
+ * GAS グローバルスコープで利用するためexportしない
  */
 
-export interface MatrixRow {
+interface MatrixRow {
   id: string;
   label: string;
   [key: string]: string;
 }
 
-export interface Matrix {
+interface Matrix {
   columns: string[];
   rows: MatrixRow[];
 }

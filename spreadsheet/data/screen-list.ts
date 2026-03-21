@@ -1,14 +1,12 @@
-import { Screen } from "../packages/screen-list/types";
-
 export const SCREENS: Screen[] = [
   {
-    id: "SCR-001",
+    id: "SCR-001" as ScreenId,
     name: "ログイン画面",
     path: "/login",
     owner: "佐藤",
   },
   {
-    id: "SCR-002",
+    id: "SCR-002" as ScreenId,
     name: "ダッシュボード",
     path: "/dashboard",
     owner: "鈴木",

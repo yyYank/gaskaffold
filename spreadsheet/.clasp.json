@@ -3,7 +3,7 @@
   "rootDir": ".",
   "filePushOrder": [
     "core/types.ts",
-    "core/builder.ts",
+    "core/sheet.ts",
     "core/exporter.ts",
     "packages/infra-runbook/types.ts",
     "packages/infra-runbook/builder.ts",
@@ -21,6 +21,6 @@
     "packages/swot/builder.ts",
     "data/infra-runbook.ts",
     "data/screen-list.ts",
-    "data/index.ts"
+    "index.ts"
   ]
 }

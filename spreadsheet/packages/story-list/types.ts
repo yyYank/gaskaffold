@@ -1,9 +1,13 @@
 /**
  * ストーリー一覧の型定義
+ * GAS グローバルスコープで利用するためexportしない
  */
 
-export interface Story {
-  id: string;
+// ノミナルタイピング: ブランド型で誤用を防ぐ
+type StoryId = string & { readonly _brand: "StoryId" };
+
+interface Story {
+  id: StoryId;
   title: string;
   asA: string;
   iWant: string;

@@ -33,6 +33,6 @@ npm run export-tsv
 
 - `data/infra-runbook.ts` - インフラ手順書のデータ
 - `data/screen-list.ts` - 画面一覧のデータ
-- `data/index.ts` - ビルド対象の設定
+- `index.ts` - GAS エントリーポイント（ビルド対象の設定）
 
 スプレッドシートの変更は必ず `data/` のコードを編集して `clasp push` で反映すること。

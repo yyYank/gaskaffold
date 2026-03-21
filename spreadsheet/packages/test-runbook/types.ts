@@ -1,9 +1,13 @@
 /**
  * テスト手順書の型定義
+ * GAS グローバルスコープで利用するためexportしない
  */
 
-export interface TestCase {
-  id: string;
+// ノミナルタイピング: ブランド型で誤用を防ぐ
+type TestCaseId = string & { readonly _brand: "TestCaseId" };
+
+interface TestCase {
+  id: TestCaseId;
   category: string;
   title: string;
   precondition?: string;

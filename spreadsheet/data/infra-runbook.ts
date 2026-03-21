@@ -1,8 +1,6 @@
-import { Step } from "../packages/infra-runbook/types";
-
 export const STEPS: Step[] = [
   {
-    id: "01-001",
+    id: "01-001" as StepId,
     phase: "事前確認",
     title: "ディスク空き容量確認",
     description: "デプロイに必要な最低 2GB 以上の空きがあること",
@@ -14,7 +12,7 @@ export const STEPS: Step[] = [
     ],
   },
   {
-    id: "01-002",
+    id: "01-002" as StepId,
     phase: "デプロイ",
     title: "Nginx 停止",
     command: "systemctl stop nginx",

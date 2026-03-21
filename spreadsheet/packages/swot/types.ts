@@ -1,10 +1,11 @@
 /**
  * 星取り表（SWOT）の型定義
+ * GAS グローバルスコープで利用するためexportしない
  */
 
-export type SwotCategory = "Strength" | "Weakness" | "Opportunity" | "Threat";
+type SwotCategory = "Strength" | "Weakness" | "Opportunity" | "Threat";
 
-export interface SwotItem {
+interface SwotItem {
   id: string;
   category: SwotCategory;
   item: string;
