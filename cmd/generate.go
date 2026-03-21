@@ -8,8 +8,9 @@ import (
 
 func newGenerateCmd(templateFS fs.FS) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "generate",
-		Short: "ボイラープレートを生成する",
+		Use:     "generate",
+		Aliases: []string{"g"},
+		Short:   "ボイラープレートを生成する",
 	}
 	cmd.AddCommand(newGenerateSpreadsheetCmd(templateFS))
 	return cmd

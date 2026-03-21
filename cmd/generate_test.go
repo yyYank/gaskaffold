@@ -22,6 +22,23 @@ func TestGenerateCommand_ExistsInRoot(t *testing.T) {
 	}
 }
 
+// `g` エイリアスで generate と同じ動作をすることを検証する
+func TestGenerateCommand_Alias(t *testing.T) {
+	buf := new(bytes.Buffer)
+	rootCmd := cmd.NewRootCmd(testFS)
+	rootCmd.SetOut(buf)
+	rootCmd.SetArgs([]string{"g", "--help"})
+
+	err := rootCmd.Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if buf.String() == "" {
+		t.Error("expected help output, got empty string")
+	}
+}
+
 // generate --help が正常に出力されることを検証する
 func TestGenerateCommand_Help(t *testing.T) {
 	buf := new(bytes.Buffer)
