@@ -11,7 +11,7 @@ import (
 // generateサブコマンドが存在し、rootのヘルプに表示されることを検証する
 func TestGenerateCommand_ExistsInRoot(t *testing.T) {
 	buf := new(bytes.Buffer)
-	rootCmd := cmd.NewRootCmd()
+	rootCmd := cmd.NewRootCmd(testFS)
 	rootCmd.SetOut(buf)
 	rootCmd.SetArgs([]string{"--help"})
 
@@ -25,7 +25,7 @@ func TestGenerateCommand_ExistsInRoot(t *testing.T) {
 // generate --help が正常に出力されることを検証する
 func TestGenerateCommand_Help(t *testing.T) {
 	buf := new(bytes.Buffer)
-	rootCmd := cmd.NewRootCmd()
+	rootCmd := cmd.NewRootCmd(testFS)
 	rootCmd.SetOut(buf)
 	rootCmd.SetArgs([]string{"generate", "--help"})
 

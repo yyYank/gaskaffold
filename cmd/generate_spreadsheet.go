@@ -1,16 +1,17 @@
 package cmd
 
 import (
+	"io/fs"
+	"os"
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/spf13/cobra"
 	"github.com/yyYank/gascaffold/internal/scaffold"
 	"golang.org/x/term"
-	"os"
 )
 
-func newGenerateSpreadsheetCmd() *cobra.Command {
+func newGenerateSpreadsheetCmd(templateFS fs.FS) *cobra.Command {
 	var outDir string
 	var packagesFlag string
 	var noInteractive bool
@@ -27,7 +28,7 @@ func newGenerateSpreadsheetCmd() *cobra.Command {
 				packages = strings.Split(packagesFlag, ",")
 			case !noInteractive && term.IsTerminal(int(os.Stdin.Fd())):
 				// インタラクティブモード: チェックボックスで選択
-				selected, err := selectPackagesInteractively()
+				selected, err := selectPackagesInteractively(templateFS)
 				if err != nil {
 					return err
 				}
@@ -37,7 +38,7 @@ func newGenerateSpreadsheetCmd() *cobra.Command {
 				packages = nil
 			}
 
-			return scaffold.Generate(outDir, packages)
+			return scaffold.Generate(templateFS, outDir, packages)
 		},
 	}
 	cmd.Flags().StringVar(&outDir, "out", "", "出力先ディレクトリ（必須）")
@@ -47,8 +48,8 @@ func newGenerateSpreadsheetCmd() *cobra.Command {
 	return cmd
 }
 
-func selectPackagesInteractively() ([]string, error) {
-	available, err := scaffold.AvailablePackages()
+func selectPackagesInteractively(templateFS fs.FS) ([]string, error) {
+	available, err := scaffold.AvailablePackages(templateFS)
 	if err != nil {
 		return nil, err
 	}

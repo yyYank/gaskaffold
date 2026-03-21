@@ -12,7 +12,7 @@ import (
 func TestGenerateSpreadsheet_CreatesOutputDir(t *testing.T) {
 	outDir := filepath.Join(t.TempDir(), "my-project")
 
-	rootCmd := cmd.NewRootCmd()
+	rootCmd := cmd.NewRootCmd(testFS)
 	rootCmd.SetArgs([]string{"generate", "spread-sheet", "--out", outDir})
 
 	err := rootCmd.Execute()
@@ -29,7 +29,7 @@ func TestGenerateSpreadsheet_CreatesOutputDir(t *testing.T) {
 func TestGenerateSpreadsheet_NoPackagesFlag_OutputsAll(t *testing.T) {
 	outDir := filepath.Join(t.TempDir(), "all-project")
 
-	rootCmd := cmd.NewRootCmd()
+	rootCmd := cmd.NewRootCmd(testFS)
 	rootCmd.SetArgs([]string{"generate", "spread-sheet", "--out", outDir, "--no-interactive"})
 
 	err := rootCmd.Execute()
@@ -53,7 +53,7 @@ func TestGenerateSpreadsheet_NoPackagesFlag_OutputsAll(t *testing.T) {
 func TestGenerateSpreadsheet_PackagesFlag(t *testing.T) {
 	outDir := filepath.Join(t.TempDir(), "filtered-project")
 
-	rootCmd := cmd.NewRootCmd()
+	rootCmd := cmd.NewRootCmd(testFS)
 	rootCmd.SetArgs([]string{
 		"generate", "spread-sheet",
 		"--out", outDir,

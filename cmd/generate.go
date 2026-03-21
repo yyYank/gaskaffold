@@ -1,12 +1,16 @@
 package cmd
 
-import "github.com/spf13/cobra"
+import (
+	"io/fs"
 
-func newGenerateCmd() *cobra.Command {
+	"github.com/spf13/cobra"
+)
+
+func newGenerateCmd(templateFS fs.FS) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "generate",
 		Short: "ボイラープレートを生成する",
 	}
-	cmd.AddCommand(newGenerateSpreadsheetCmd())
+	cmd.AddCommand(newGenerateSpreadsheetCmd(templateFS))
 	return cmd
 }

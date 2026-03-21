@@ -4,15 +4,44 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"testing/fstest"
 
 	"github.com/yyYank/gascaffold/internal/scaffold"
 )
+
+// テスト用の最小限テンプレートFS
+var testFS = fstest.MapFS{
+	"core/types.ts":    {},
+	"core/sheet.ts":    {},
+	"core/exporter.ts": {},
+	"data/infra-runbook.ts": {},
+	"data/screen-list.ts":   {},
+	"packages/infra-runbook/builder.ts": {},
+	"packages/infra-runbook/types.ts":   {},
+	"packages/matrix/builder.ts":        {},
+	"packages/matrix/types.ts":          {},
+	"packages/planning/builder.ts":      {},
+	"packages/planning/types.ts":        {},
+	"packages/screen-list/builder.ts":   {},
+	"packages/screen-list/types.ts":     {},
+	"packages/story-list/builder.ts":    {},
+	"packages/story-list/types.ts":      {},
+	"packages/swot/builder.ts":          {},
+	"packages/swot/types.ts":            {},
+	"packages/test-runbook/builder.ts":  {},
+	"packages/test-runbook/types.ts":    {},
+	"index.ts":          {},
+	"package.json":      {},
+	"tsconfig.json":     {},
+	"appsscript.json":   {},
+	"scripts/export-tsv.ts": {},
+}
 
 // Generate を呼ぶと core/ 配下のファイルが出力ディレクトリにコピーされることを検証する
 func TestGenerate_CopiesCoreFiles(t *testing.T) {
 	outDir := t.TempDir()
 
-	err := scaffold.Generate(outDir, nil)
+	err := scaffold.Generate(testFS, outDir, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -30,7 +59,7 @@ func TestGenerate_CopiesCoreFiles(t *testing.T) {
 func TestGenerate_CopiesDataFiles(t *testing.T) {
 	outDir := t.TempDir()
 
-	err := scaffold.Generate(outDir, nil)
+	err := scaffold.Generate(testFS, outDir, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -48,7 +77,7 @@ func TestGenerate_CopiesDataFiles(t *testing.T) {
 func TestGenerate_FiltersPackages(t *testing.T) {
 	outDir := t.TempDir()
 
-	err := scaffold.Generate(outDir, []string{"infra-runbook", "screen-list"})
+	err := scaffold.Generate(testFS, outDir, []string{"infra-runbook", "screen-list"})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -72,7 +101,7 @@ func TestGenerate_FiltersPackages(t *testing.T) {
 
 // AvailablePackages がテンプレートに含まれる全パッケージ名を返すことを検証する
 func TestAvailablePackages(t *testing.T) {
-	packages, err := scaffold.AvailablePackages()
+	packages, err := scaffold.AvailablePackages(testFS)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -99,7 +128,7 @@ func TestAvailablePackages(t *testing.T) {
 func TestGenerate_CopiesAllPackages(t *testing.T) {
 	outDir := t.TempDir()
 
-	err := scaffold.Generate(outDir, nil)
+	err := scaffold.Generate(testFS, outDir, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

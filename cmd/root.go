@@ -1,12 +1,16 @@
 package cmd
 
-import "github.com/spf13/cobra"
+import (
+	"io/fs"
 
-func NewRootCmd() *cobra.Command {
+	"github.com/spf13/cobra"
+)
+
+func NewRootCmd(templateFS fs.FS) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "gascaffold",
 		Short: "GAS スプレッドシートプロジェクトのボイラープレート生成ツール",
 	}
-	cmd.AddCommand(newGenerateCmd())
+	cmd.AddCommand(newGenerateCmd(templateFS))
 	return cmd
 }
