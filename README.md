@@ -48,7 +48,7 @@ spreadsheet-as-code/
 
 ### 前提
 
-- Node.js 18+
+- Node.js 22+
 - [clasp](https://github.com/google/clasp) (`npm install -g @google/clasp`)
 - Google アカウント
 
