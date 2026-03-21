@@ -1,4 +1,4 @@
-# gaskaffold
+# gascaffold
 
 Google スプレッドシートなど、GASで扱えるドキュメント群をコードで管理するボイラープレート生成キットツール
 
